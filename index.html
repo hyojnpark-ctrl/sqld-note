@@ -90,6 +90,11 @@
     .answer-btn { font-size: 13px; padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-md); background: var(--surface-2); color: var(--text); cursor: pointer; font-family: inherit; transition: background 0.12s; }
     .answer-btn:hover { background: var(--surface); }
     .note-box { background: var(--amber-50); border: 1px solid var(--amber-100); border-radius: var(--radius-sm); padding: 10px 12px; margin-top: 10px; }
+    @media (prefers-color-scheme: dark) {
+      .note-box { background: #2a2318; border-color: #4a3a1a; }
+      .note-content th { background: #3a2e18; }
+      .note-content th, .note-content td { border-color: #4a3a1a; }
+    }
     .note-label { font-size: 11px; color: var(--amber-600); font-weight: 700; margin-bottom: 4px; }
     .note-content { font-size: 13px; color: var(--text); line-height: 1.65; word-break: keep-all; }
     .note-content p { margin-bottom: 6px; }
