@@ -127,6 +127,9 @@
       .tab { font-size: 12px; padding: 5px 10px; }
       .add-btn, .grade-all-btn, .reset-btn { font-size: 12px; padding: 5px 12px; }
     }
+    pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin: 8px 0; overflow-x: auto; }
+    pre code { font-family: monospace; font-size: 12px; background: none; padding: 0; border-radius: 0; }
+    code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; }
   </style>
 </head>
 <body>
@@ -221,8 +224,16 @@
     setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  function mdToHtml(text) {
+function mdToHtml(text) {
     if (!text) return '';
+    // 코드 블록 처리
+    text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, function(_, lang, code) {
+      return '<pre><code>' + escHtml(code.trim()) + '</code></pre>';
+    });
+    // 인라인 코드 처리
+    text = text.replace(/`([^`]+)`/g, function(_, code) {
+      return '<code>' + escHtml(code) + '</code>';
+    });
     const lines = text.split('\n');
     let html = '', i = 0;
     while (i < lines.length) {
@@ -234,7 +245,8 @@
         continue;
       }
       if (line.trim() === '') { i++; continue; }
-      html += '<p>' + escHtml(line) + '</p>';
+      if (line.startsWith('<pre>')) { html += line; i++; continue; }
+      html += '<p>' + line + '</p>';
       i++;
     }
     return html;
