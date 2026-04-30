@@ -113,7 +113,6 @@
     input[type=text]:focus, textarea:focus, select:focus { border-color: var(--blue-600); }
     textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
     .choice-row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
-    .choice-row input[type=text] { flex: 1; }
     .choice-num { font-size: 13px; font-weight: 700; width: 20px; flex-shrink: 0; color: var(--text-2); text-align: center; }
     .correct-radio { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-2); white-space: nowrap; flex-shrink: 0; }
     .correct-radio input[type=radio] { width: auto; accent-color: var(--blue-600); }
@@ -135,6 +134,11 @@
     pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin: 8px 0; overflow-x: auto; }
     pre code { font-family: monospace; font-size: 12px; background: none; padding: 0; border-radius: 0; }
     code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+    .choice-row textarea {
+            flex: 1;
+            resize: vertical;
+            min-height: 40px;
+          }
   </style>
 </head>
 <body>
@@ -363,7 +367,7 @@ function mdToHtml(text) {
       if (submitted) { if(i+1===p.correct) cls+=' correct-reveal'; else if(selected===i+1) cls+=' wrong-reveal'; }
       else if (selected===i+1) cls+=' selected';
       const click = submitted ? '' : 'onclick="selectAnswer('+p.id+','+(i+1)+')"';
-      return '<div class="'+cls+'" '+click+'><span class="choice-num-label">'+(i+1)+'</span><span>'+escHtml(c)+'</span></div>';
+      return '<div class="'+cls+'" '+click+'><span class="choice-num-label">'+(i+1)+'</span><span style="white-space: pre-line;">'+escHtml(c)+'</span></div>';
     }).join('');
     const resultHtml = submitted
       ? '<div class="result-msg '+(selected===p.correct?'correct':'wrong')+'">'+(selected===p.correct?'✓ 정답입니다!':'✗ 오답 — 정답은 '+p.correct+'번입니다')+'</div>'
@@ -422,11 +426,17 @@ function mdToHtml(text) {
     document.getElementById('modalOverlay').style.display='flex';
   }
   function renderChoiceInputs(p) {
-    const vals=p?p.choices:['','','','',''];
-    document.getElementById('choiceInputs').innerHTML=vals.map((v,i)=>
-      '<div class="choice-row"><span class="choice-num">'+(i+1)+'</span><input type="text" value="'+escHtml(v)+'" placeholder="보기 '+(i+1)+'" id="ch'+i+'"><label class="correct-radio"><input type="radio" name="correct" value="'+(i+1)+'" '+(correctAnswer===i+1?'checked':'')+' onchange="correctAnswer='+(i+1)+'"> 정답</label></div>'
-    ).join('');
-  }
+  const vals=p?p.choices:['','','','',''];
+  document.getElementById('choiceInputs').innerHTML=vals.map((v,i)=>
+    '<div class="choice-row">' +
+    '<span class="choice-num">'+(i+1)+'</span>' +
+    '<textarea id="ch'+i+'" placeholder="보기 '+(i+1)+'" rows="2">'+escHtml(v)+'</textarea>' +
+    '<label class="correct-radio">' +
+      '<input type="radio" name="correct" value="'+(i+1)+'" '+(correctAnswer===i+1?'checked':'')+' onchange="correctAnswer='+(i+1)+'"> 정답' +
+    '</label>' +
+    '</div>'
+  ).join('');
+}
   function closeModal() { document.getElementById('modalOverlay').style.display='none'; }
   function overlayClick(e) { if(e.target===document.getElementById('modalOverlay')) closeModal(); }
   function saveQuestion() {
