@@ -71,6 +71,7 @@
     .q-text table { border-collapse: collapse; margin: 8px 0; font-size: 13px; width: 100%; }
     .q-text th, .q-text td { border: 1px solid var(--border-md); padding: 5px 10px; text-align: left; }
     .q-text th { background: var(--surface-2); font-weight: 700; }
+    .q-text img { max-width: 100%; border-radius: var(--radius-sm); margin: 6px 0; display: block; }
     .card-btns { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
     .icon-btn { width: 30px; height: 30px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--text-2); transition: background 0.12s; }
     .icon-btn:hover { background: var(--surface-2); }
@@ -102,6 +103,7 @@
     .note-content table { border-collapse: collapse; margin: 6px 0; font-size: 13px; width: 100%; }
     .note-content th, .note-content td { border: 1px solid var(--amber-100); padding: 4px 8px; text-align: left; }
     .note-content th { background: var(--amber-100); font-weight: 700; }
+    .note-content img { max-width: 100%; border-radius: var(--radius-sm); margin: 6px 0; display: block; }
     .empty { text-align: center; padding: 4rem 1rem; color: var(--text-2); font-size: 14px; line-height: 2; }
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; overflow-y: auto; }
     .modal { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border-md); padding: 1.5rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
@@ -113,6 +115,7 @@
     input[type=text]:focus, textarea:focus, select:focus { border-color: var(--blue-600); }
     textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
     .choice-row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+    .choice-row textarea { flex: 1; resize: vertical; min-height: 40px; }
     .choice-num { font-size: 13px; font-weight: 700; width: 20px; flex-shrink: 0; color: var(--text-2); text-align: center; }
     .correct-radio { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-2); white-space: nowrap; flex-shrink: 0; }
     .correct-radio input[type=radio] { width: auto; accent-color: var(--blue-600); }
@@ -123,6 +126,34 @@
     .btn-save:hover { background: var(--blue-100); }
     .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); font-size: 13px; padding: 9px 18px; border-radius: var(--radius-md); z-index: 999; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; font-family: 'Noto Sans KR', sans-serif; }
     .toast.show { opacity: 1; }
+    pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin: 8px 0; overflow-x: auto; }
+    pre code { font-family: monospace; font-size: 12px; background: none; padding: 0; border-radius: 0; }
+    code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+
+    /* 이미지 붙여넣기 영역 */
+    .img-paste-area {
+      position: relative; border: 1.5px dashed var(--border-md); border-radius: var(--radius-sm);
+      padding: 12px; margin-top: 6px; min-height: 60px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .img-paste-area.drag-over { border-color: var(--blue-600); background: var(--blue-50); }
+    .img-paste-hint { font-size: 12px; color: var(--text-3); text-align: center; padding: 6px 0; }
+    .img-preview-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .img-preview-item { position: relative; }
+    .img-preview-item img { height: 80px; border-radius: var(--radius-sm); border: 1px solid var(--border); display: block; }
+    .img-remove-btn {
+      position: absolute; top: -6px; right: -6px; width: 18px; height: 18px;
+      border-radius: 50%; background: var(--red-600); color: #fff; border: none;
+      cursor: pointer; font-size: 11px; display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .img-upload-btn {
+      font-size: 12px; padding: 5px 12px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border-md); background: var(--surface); color: var(--text-2);
+      cursor: pointer; font-family: inherit; align-self: flex-start;
+    }
+    .img-upload-btn:hover { background: var(--surface-2); }
+
     @media (max-width: 480px) {
       .container { padding: 1rem 0.75rem 4rem; }
       .stats-row { grid-template-columns: repeat(2, 1fr); }
@@ -131,14 +162,6 @@
       .tab { font-size: 12px; padding: 5px 10px; }
       .add-btn, .grade-all-btn, .reset-btn { font-size: 12px; padding: 5px 12px; }
     }
-    pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin: 8px 0; overflow-x: auto; }
-    pre code { font-family: monospace; font-size: 12px; background: none; padding: 0; border-radius: 0; }
-    code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 12px; }
-    .choice-row textarea {
-            flex: 1;
-            resize: vertical;
-            min-height: 40px;
-          }
   </style>
 </head>
 <body>
@@ -178,8 +201,18 @@
     <div class="modal-title" id="modalTitle">오답 문제 추가</div>
     <div class="field-group">
       <div class="field-label">문제 내용</div>
-      <div class="field-hint">줄바꿈: Enter 그대로 / 표: | 컬럼1 | 컬럼2 | 형식으로 입력</div>
-      <textarea id="fQuestion" placeholder="예시:&#10;다음 중 올바른 것은?&#10;&#10;| 구분 | 설명 |&#10;|------|------|&#10;| A    | 내용1 |" style="min-height:130px"></textarea>
+      <div class="field-hint">줄바꿈: Enter / 표: | 컬럼1 | 컬럼2 | / 코드: ` 코드 ` 또는 ```블록```</div>
+      <textarea id="fQuestion" placeholder="문제를 입력하세요" style="min-height:100px"></textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">문제 이미지 <span style="font-weight:400;color:var(--text-3)">(선택)</span></div>
+      <div class="field-hint">스크린샷을 Ctrl+V 로 붙여넣거나, 파일을 드래그하거나, 버튼으로 선택하세요</div>
+      <div class="img-paste-area" id="qImgArea">
+        <div class="img-preview-list" id="qImgList"></div>
+        <div class="img-paste-hint" id="qImgHint">여기에 이미지를 붙여넣으세요 (Ctrl+V)</div>
+        <button class="img-upload-btn" onclick="document.getElementById('qImgFile').click()">📁 파일 선택</button>
+        <input type="file" id="qImgFile" accept="image/*" multiple style="display:none" onchange="handleImgFile(event,'q')">
+      </div>
     </div>
     <div class="field-group">
       <div class="field-label">카테고리</div>
@@ -209,6 +242,15 @@
       <div class="field-hint">줄바꿈과 표 문법 동일하게 사용 가능</div>
       <textarea id="fNote" placeholder="내 식대로 설명을 적어두세요..."></textarea>
     </div>
+    <div class="field-group">
+      <div class="field-label">해설 이미지 <span style="font-weight:400;color:var(--text-3)">(선택)</span></div>
+      <div class="img-paste-area" id="nImgArea">
+        <div class="img-preview-list" id="nImgList"></div>
+        <div class="img-paste-hint" id="nImgHint">여기에 이미지를 붙여넣으세요 (Ctrl+V)</div>
+        <button class="img-upload-btn" onclick="document.getElementById('nImgFile').click()">📁 파일 선택</button>
+        <input type="file" id="nImgFile" accept="image/*" multiple style="display:none" onchange="handleImgFile(event,'n')">
+      </div>
+    </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="closeModal()">취소</button>
       <button class="btn-save" onclick="saveQuestion()">저장</button>
@@ -220,6 +262,7 @@
   let problems = [], currentTab = 'all';
   let expandedIds = new Set(), selectedAnswers = {}, revealedNotes = new Set(), submittedIds = new Set();
   let editingId = null, correctAnswer = null;
+  let qImages = [], nImages = []; // base64 배열
 
   function loadData() {
     try { const r = localStorage.getItem(STORAGE_KEY); if (r) problems = JSON.parse(r); } catch(e) { problems = []; }
@@ -233,30 +276,97 @@
     setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-function mdToHtml(text) {
-    if (!text) return '';
-    // 코드 블록 처리
-    text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, function(_, lang, code) {
-      return '<pre><code>' + escHtml(code.trim()) + '</code></pre>';
+  /* ── 이미지 처리 ── */
+  function fileToBase64(file) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result);
+      r.onerror = rej;
+      r.readAsDataURL(file);
     });
-    // 인라인 코드 처리
-    text = text.replace(/`([^`]+)`/g, function(_, code) {
-      return '<code>' + escHtml(code) + '</code>';
-    });
-    const lines = text.split('\n');
-    let html = '', i = 0;
-    while (i < lines.length) {
-      const line = lines[i];
-      if (line.trim().startsWith('|')) {
-        let tl = [];
-        while (i < lines.length && lines[i].trim().startsWith('|')) { tl.push(lines[i]); i++; }
-        html += buildTable(tl);
-        continue;
+  }
+
+  async function addImage(file, target) {
+    if (!file.type.startsWith('image/')) return;
+    const b64 = await fileToBase64(file);
+    if (target === 'q') { qImages.push(b64); renderImgPreviews('q'); }
+    else { nImages.push(b64); renderImgPreviews('n'); }
+  }
+
+  function handleImgFile(e, target) {
+    Array.from(e.target.files).forEach(f => addImage(f, target));
+    e.target.value = '';
+  }
+
+  function removeImage(target, idx) {
+    if (target === 'q') qImages.splice(idx, 1);
+    else nImages.splice(idx, 1);
+    renderImgPreviews(target);
+  }
+
+  function renderImgPreviews(target) {
+    const imgs = target === 'q' ? qImages : nImages;
+    const listEl = document.getElementById(target + 'ImgList');
+    const hintEl = document.getElementById(target + 'ImgHint');
+    listEl.innerHTML = imgs.map((src, i) =>
+      '<div class="img-preview-item">' +
+        '<img src="' + src + '">' +
+        '<button class="img-remove-btn" onclick="removeImage(\'' + target + '\',' + i + ')">✕</button>' +
+      '</div>'
+    ).join('');
+    hintEl.style.display = imgs.length ? 'none' : 'block';
+  }
+
+  function setupPasteArea(areaId, target) {
+    const area = document.getElementById(areaId);
+    // Ctrl+V 붙여넣기
+    document.addEventListener('paste', function(e) {
+      if (!document.getElementById('modalOverlay').style.display || document.getElementById('modalOverlay').style.display === 'none') return;
+      const items = e.clipboardData && e.clipboardData.items;
+      if (!items) return;
+      for (let item of items) {
+        if (item.type.startsWith('image/')) {
+          // 포커스된 영역 기준으로 구분 (기본은 q)
+          const focused = document.activeElement;
+          const t = (focused && focused.closest('#nImgArea')) ? 'n' : target;
+          addImage(item.getAsFile(), t);
+        }
       }
-      if (line.trim() === '') { i++; continue; }
-      if (line.startsWith('<pre>')) { html += line; i++; continue; }
-      html += '<p>' + line + '</p>';
-      i++;
+    });
+    // 드래그앤드롭
+    area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+    area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+    area.addEventListener('drop', e => {
+      e.preventDefault(); area.classList.remove('drag-over');
+      Array.from(e.dataTransfer.files).forEach(f => addImage(f, target));
+    });
+  }
+
+  /* ── 마크다운 변환 ── */
+  function mdToHtml(text, images) {
+    if (!text && (!images || !images.length)) return '';
+    let html = '';
+    if (text) {
+      text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) =>
+        '<pre><code>' + escHtml(code.trim()) + '</code></pre>');
+      text = text.replace(/`([^`]+)`/g, (_, code) => '<code>' + escHtml(code) + '</code>');
+      const lines = text.split('\n');
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i];
+        if (line.trim().startsWith('|')) {
+          let tl = [];
+          while (i < lines.length && lines[i].trim().startsWith('|')) { tl.push(lines[i]); i++; }
+          html += buildTable(tl); continue;
+        }
+        if (line.trim() === '') { i++; continue; }
+        if (line.startsWith('<pre>')) { html += line; i++; continue; }
+        html += '<p>' + line + '</p>';
+        i++;
+      }
+    }
+    if (images && images.length) {
+      images.forEach(src => { html += '<img src="' + src + '" style="max-width:100%;border-radius:6px;margin:6px 0;display:block;">'; });
     }
     return html;
   }
@@ -277,6 +387,7 @@ function mdToHtml(text) {
 
   function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+  /* ── 내보내기 / 가져오기 ── */
   function exportJSON() {
     if (!problems.length) { showToast('저장된 문제가 없습니다'); return; }
     const blob = new Blob([JSON.stringify(problems, null, 2)], {type:'application/json'});
@@ -307,6 +418,7 @@ function mdToHtml(text) {
     reader.readAsText(file);
   }
 
+  /* ── 전체 채점 / 리셋 ── */
   function gradeAll() {
     const unsolved = problems.filter(p => !submittedIds.has(p.id));
     if (!unsolved.length) { showToast('미풀이 문제가 없습니다'); return; }
@@ -324,6 +436,7 @@ function mdToHtml(text) {
     renderAll(); showToast('풀이 기록을 초기화했습니다');
   }
 
+  /* ── 렌더링 ── */
   const CAT_COLORS = {
     '데이터 모델링':['#E6F1FB','#B5D4F4','#0C447C'], 'SQL 기본':['#E1F5EE','#9FE1CB','#085041'],
     'SQL 활용':['#EEEDFE','#CECBF6','#26215C'], '관리 구문':['#FAECE7','#F5C4B3','#712B13'],
@@ -367,12 +480,14 @@ function mdToHtml(text) {
       if (submitted) { if(i+1===p.correct) cls+=' correct-reveal'; else if(selected===i+1) cls+=' wrong-reveal'; }
       else if (selected===i+1) cls+=' selected';
       const click = submitted ? '' : 'onclick="selectAnswer('+p.id+','+(i+1)+')"';
-      return '<div class="'+cls+'" '+click+'><span class="choice-num-label">'+(i+1)+'</span><span style="white-space: pre-line;">'+escHtml(c)+'</span></div>';
+      return '<div class="'+cls+'" '+click+'><span class="choice-num-label">'+(i+1)+'</span><span style="white-space:pre-line">'+escHtml(c)+'</span></div>';
     }).join('');
     const resultHtml = submitted
       ? '<div class="result-msg '+(selected===p.correct?'correct':'wrong')+'">'+(selected===p.correct?'✓ 정답입니다!':'✗ 오답 — 정답은 '+p.correct+'번입니다')+'</div>'
       : '';
-    const noteHtml = (noteVisible&&p.note) ? '<div class="note-box"><div class="note-label">내 해설 노트</div><div class="note-content">'+mdToHtml(p.note)+'</div></div>' : '';
+    const noteHtml = (noteVisible&&(p.note||p.noteImages&&p.noteImages.length))
+      ? '<div class="note-box"><div class="note-label">내 해설 노트</div><div class="note-content">'+mdToHtml(p.note, p.noteImages)+'</div></div>'
+      : '';
     let btns = '<button class="answer-btn" onclick="toggleNote('+p.id+')">'+(noteVisible?'해설 숨기기':'해설 보기')+'</button>';
     if (!submitted) btns = '<button class="answer-btn" onclick="submitAnswer('+p.id+')">채점하기</button>' + btns;
     if (submitted) btns += '<button class="answer-btn" onclick="resetAnswer('+p.id+')">다시 풀기</button>';
@@ -380,7 +495,7 @@ function mdToHtml(text) {
       '<div class="card-header" onclick="toggleCard('+p.id+')">' +
         '<div class="card-meta">' +
           '<div class="card-top"><span class="q-num">Q'+(idx+1)+'</span>'+catBadge(p.category)+diffBadge(p.diff)+resultBadge(p)+'</div>' +
-          '<div class="q-text">'+mdToHtml(p.question)+'</div>' +
+          '<div class="q-text">'+mdToHtml(p.question, p.images)+'</div>' +
         '</div>' +
         '<div class="card-btns" onclick="event.stopPropagation()">' +
           '<button class="icon-btn" onclick="openEditModal('+p.id+')" title="수정">✎</button>' +
@@ -404,39 +519,44 @@ function mdToHtml(text) {
     saveData(); renderAll();
   }
   function setTab(t,el) { currentTab=t; document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active')); el.classList.add('active'); renderList(); }
+
   function openAddModal() {
-    editingId=null; correctAnswer=null;
+    editingId=null; correctAnswer=null; qImages=[]; nImages=[];
     document.getElementById('modalTitle').textContent='오답 문제 추가';
     document.getElementById('fQuestion').value='';
     document.getElementById('fCategory').value='데이터 모델링';
     document.getElementById('fDiff').value='중';
     document.getElementById('fNote').value='';
     renderChoiceInputs(null);
+    renderImgPreviews('q'); renderImgPreviews('n');
     document.getElementById('modalOverlay').style.display='flex';
   }
   function openEditModal(id) {
     const p=problems.find(x=>x.id===id); if(!p) return;
     editingId=id; correctAnswer=p.correct;
+    qImages = p.images ? [...p.images] : [];
+    nImages = p.noteImages ? [...p.noteImages] : [];
     document.getElementById('modalTitle').textContent='문제 수정';
     document.getElementById('fQuestion').value=p.question;
     document.getElementById('fCategory').value=p.category;
     document.getElementById('fDiff').value=p.diff;
     document.getElementById('fNote').value=p.note||'';
     renderChoiceInputs(p);
+    renderImgPreviews('q'); renderImgPreviews('n');
     document.getElementById('modalOverlay').style.display='flex';
   }
   function renderChoiceInputs(p) {
-  const vals=p?p.choices:['','','','',''];
-  document.getElementById('choiceInputs').innerHTML=vals.map((v,i)=>
-    '<div class="choice-row">' +
-    '<span class="choice-num">'+(i+1)+'</span>' +
-    '<textarea id="ch'+i+'" placeholder="보기 '+(i+1)+'" rows="2">'+escHtml(v)+'</textarea>' +
-    '<label class="correct-radio">' +
-      '<input type="radio" name="correct" value="'+(i+1)+'" '+(correctAnswer===i+1?'checked':'')+' onchange="correctAnswer='+(i+1)+'"> 정답' +
-    '</label>' +
-    '</div>'
-  ).join('');
-}
+    const vals=p?p.choices:['','','','',''];
+    document.getElementById('choiceInputs').innerHTML=vals.map((v,i)=>
+      '<div class="choice-row">' +
+      '<span class="choice-num">'+(i+1)+'</span>' +
+      '<textarea id="ch'+i+'" placeholder="보기 '+(i+1)+'" rows="2">'+escHtml(v)+'</textarea>' +
+      '<label class="correct-radio">' +
+        '<input type="radio" name="correct" value="'+(i+1)+'" '+(correctAnswer===i+1?'checked':'')+' onchange="correctAnswer='+(i+1)+'"> 정답' +
+      '</label>' +
+      '</div>'
+    ).join('');
+  }
   function closeModal() { document.getElementById('modalOverlay').style.display='none'; }
   function overlayClick(e) { if(e.target===document.getElementById('modalOverlay')) closeModal(); }
   function saveQuestion() {
@@ -446,11 +566,17 @@ function mdToHtml(text) {
     if(choices.some(c=>!c)){showToast('보기를 모두 입력해주세요');return;}
     if(!correctAnswer){showToast('정답 보기를 선택해주세요');return;}
     const cat=document.getElementById('fCategory').value, diff=document.getElementById('fDiff').value, note=document.getElementById('fNote').value.trim();
-    if(editingId!==null){const idx=problems.findIndex(p=>p.id===editingId);if(idx!==-1)problems[idx]={...problems[idx],question:q,category:cat,diff,choices,correct:correctAnswer,note};}
-    else problems.push({id:Date.now(),question:q,category:cat,diff,choices,correct:correctAnswer,note});
+    const newData = { question:q, category:cat, diff, choices, correct:correctAnswer, note, images:[...qImages], noteImages:[...nImages] };
+    if(editingId!==null){const idx=problems.findIndex(p=>p.id===editingId);if(idx!==-1)problems[idx]={...problems[idx],...newData};}
+    else problems.push({id:Date.now(),...newData});
     closeModal(); saveData(); renderAll();
     showToast(editingId!==null?'문제를 수정했습니다':'문제를 추가했습니다');
   }
+
+  // 붙여넣기 이벤트 등록
+  setupPasteArea('qImgArea', 'q');
+  setupPasteArea('nImgArea', 'n');
+
   loadData();
 </script>
 </body>
